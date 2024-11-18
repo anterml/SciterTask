@@ -1,0 +1,82 @@
+<html>
+  <head>
+    <title>Todos Sciter</title>
+    <link
+      rel="stylesheet"
+      href="styles.css"
+    />
+    >
+
+    <script type="module">
+      import TodoCreator from "./Todos/Creator.js"
+      import TodoItem from "./Todos/Item.js"
+      import { initialData, getRandomId } from "./Todos/utils.js"
+
+      class App extends Element {
+        todos = initialData
+
+        constructor() {
+          super()
+        }
+
+        componentDidMount() {
+          // remove a todo
+          document.$(".todos").on("click", this.removeTodo)
+          // toggle todo complete
+          document.$(".todos").on("click", this.toggleTodoComplete)
+        }
+
+        removeTodo = e => {
+          const todoId = e.target.getAttribute("data-remove")
+          if (!todoId) return
+          this.componentUpdate({
+            todos: this.todos.filter(target => target.id !== todoId),
+          })
+        }
+
+        toggleTodoComplete = e => {
+          const todoId = e.target.getAttribute("data-complete")
+          if (!todoId) return
+          this.componentUpdate({
+            todos: this.todos.map(target =>
+              target.id !== todoId
+                ? target
+                : { ...target, complete: !target.complete },
+            ),
+          })
+        }
+
+        addTodo = value => {
+          this.componentUpdate({
+            todos: [
+              ...this.todos,
+              {
+                id: getRandomId(),
+                value,
+                complete: false,
+              },
+            ],
+          })
+        }
+
+        render() {
+          return (
+            <div class="container">
+              <TodoCreator addTodo={this.addTodo} />
+              <h2>Todos count ({this.todos.length})</h2>
+              <div class="todos">
+                {this.todos.map(todo => (
+                  <TodoItem todo={todo} />
+                ))}
+              </div>
+            </div>
+          )
+        }
+      }
+
+      document.body.patch(<App />)
+    </script>
+  </head>
+
+  <body></body>
+</html>

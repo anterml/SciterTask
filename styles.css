@@ -1,0 +1,41 @@
+:root {
+  --color-active: #222;
+  --color-passive: #888;
+}
+
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
+}
+
+.container {
+  padding: 10px 20px;
+}
+
+.todos {
+  margin: 10px 0;
+}
+
+.todos__item {
+  margin-bottom: 5px;
+}
+
+.todos__item > * {
+  margin-right: 5px;
+}
+
+.todos__item__value[data-done="true"] {
+  text-decoration: line-through;
+  color: var(--color-passive);
+}
+
+.todos__item__value {
+  color: var(--color-active);
+  min-width: 100px;
+  display: inline-block;
+}
+
+button:not(:disabled):hover {
+  cursor: pointer;
+}
